@@ -1,34 +1,26 @@
-name: Build and Push Docker Image
+name: Prueba num 1 (Flask)
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-
-    permissions: 
+  decir-hola:
+    runs-on: ubuntu-latest
+    permissions:
       contents: read
       packages: write
     environment: produccion
-
-
-  build:
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/testeso3:latest .
+      - name: Logearnos en GHCR
+        run: echo "${{ secrets.TOKEN1 }}" | docker login ghcr.io -u branliprime --password-stdin
 
-      - name: Push Docker image to GHCR
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/testeso3:latest
+      - name: Crear imagen
+        run: docker build . -t ghcr.io/branliprime/flask-image:latest
+
+      - name: Desplegar imagen
+        run: docker push ghcr.io/branliprime/flask-image:latest
