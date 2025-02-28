@@ -1,17 +1,13 @@
-# Usa la imagen oficial de Python
-FROM python:3.9
+FROM python:latest
 
-# Establece el directorio de trabajo en el contenedor
-WORKDIR app
+WORKDIR /app
 
-# Copia los archivos del proyecto al contenedor
 COPY . .
 
-# Instala las dependencias
 RUN pip install -r requirements.txt
 
-# Expone el puerto de Flask
+ENV FLASK_APP=app.py
+
 EXPOSE 5000
 
-# Comando para ejecutar la aplicación
-CMD ["python", "app.py"]
+CMD ["flask", "run", "--host=0.0.0.0"]
